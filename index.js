@@ -1,6 +1,7 @@
 import { getPosts, getRandomPic } from './helpers.js';
 
 const elDaftarBerita = document.querySelector('#daftar-berita');
+const elLoading = document.querySelector('#loading');
 
 /**
  *
@@ -62,6 +63,8 @@ const renderPosts = async () => {
         let result = createPostElement(thumbnails[i], posts[i]);
         elDaftarBerita.appendChild(result);
     }
+    elLoading.classList.add('d-none')
+
   } catch(error){
       console.log(error)
   }
