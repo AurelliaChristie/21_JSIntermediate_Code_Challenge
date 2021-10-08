@@ -35,7 +35,7 @@ const createPostElement = (thumbnail, post) => {
   // EDIT HERE
   elCardTitle.innerHTML = post.title;
   elCardImg.src = thumbnail;
-  elCardBtn.href = `/post.html?post_id=$POST_ID`;
+  elCardBtn.href = `/post.html?post_id=${post.id}`;
 
   return elCol;
 };
