@@ -33,12 +33,38 @@ const createPostElement = (thumbnail, post) => {
   elCol.appendChild(elCard);
 
   // EDIT HERE
+  elCardTitle.innerHTML = post.title;
+  elCardImg.src = thumbnail;
+  elCardBtn.href = `/post.html?post_id=$POST_ID`;
 
   return elCol;
 };
 
+const getURL = async function(){
+    try{
+        let thumbnails=[];
+        for(let i=0; i<16; i++){
+            let url = await getRandomPic();
+            thumbnails.push(url);
+        }
+        return thumbnails;
+    } catch(error){
+        console.log(error)
+    }
+}
+
 const renderPosts = async () => {
   // EDIT HERE
+  try{
+    let posts = await getPosts();
+    let thumbnails = await getURL();
+    for(let i=0; i<16; i++){
+        let result = createPostElement(thumbnails[i], posts[i]);
+        elDaftarBerita.appendChild(result);
+    }
+  } catch(error){
+      console.log(error)
+  }
 };
 
 renderPosts();
