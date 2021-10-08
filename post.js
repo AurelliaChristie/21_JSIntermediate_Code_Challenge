@@ -49,6 +49,7 @@ const renderPost = async () => {
             elCardText.innerHTML = postDetails[0].body;
             elCardAuthorImg.src = postDetails[2];
             elCardAuthorName.innerHTML = postDetails[4].name;
+            elCardAuthorName.href = `/author.html?author_id=${postDetails[0].userId}`
             elCardAuthorEmail.innerHTML = postDetails[4].email;
             Array.from(postDetails[3]).forEach(comment => {
                 let comment_detail = createListElement(comment);
