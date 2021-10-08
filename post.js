@@ -1,4 +1,9 @@
-const params; // tempat menampung parameter yang ada
+import { getPost } from './helpers.js';
+
+/**
+ *
+ * @param {Object} comment 
+ */
 
 const elPageTitle = document.querySelector('#page-title');
 const elDetailBerita = document.querySelector('#detail-berita');
@@ -32,7 +37,30 @@ const createListElement = (comment) => {
 };
 
 const renderPost = async () => {
-  // EDIT HERE
+    try{
+        let URL = document.URL;
+        let post_id = URL.split('=')[1];
+        let postDetails = await getPost(post_id);
+        if(postDetails !== "Not Found"){
+            elDetailBerita.classList.remove("d-none");
+            elLoading.classList.add("d-none");
+            elPageTitle.innerHTML = postDetails[0].title;
+            elCardImg.src = postDetails[1];
+            elCardText.innerHTML = postDetails[0].body;
+            elCardAuthorImg.src = postDetails[2];
+            elCardAuthorName.innerHTML = postDetails[4].name;
+            elCardAuthorEmail.innerHTML = postDetails[4].email;
+            Array.from(postDetails[3]).forEach(comment => {
+                let comment_detail = createListElement(comment);
+                elListGroup.appendChild(comment_detail);
+            })
+        } else {
+            elLoading.classList.add("d-none")
+            elNotFound.classList.remove("d-none")
+        }
+      } catch(error){
+          console.log(error)
+      }
 };
 
 renderPost();
