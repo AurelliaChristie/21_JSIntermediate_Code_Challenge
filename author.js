@@ -1,4 +1,10 @@
-const params;
+import { getAuthor, getPostsByAuthor,getRandomPic } from "./helpers.js";
+
+/**
+ *
+ * @param {String} thumbnail => url yang kita ambil menggunakan Unsplash API
+ * @param {Object} post => object post yang kita ambil dari jsonplaceholder API
+ */
 
 const elPageTitle = document.querySelector('#page-title');
 const elPostList = document.querySelector('#post-list');
@@ -25,10 +31,45 @@ const createPostElement = (thumbnail, post) => {
       </div>
     </div>`
   );
+  return elCol;
 };
 
+
 const renderPosts = async () => {
-  // EDIT HERE
+  try{
+    let URL = document.URL;
+    let author_id = URL.split('=')[1];
+    let authorDetails = await getAuthor(author_id);
+    let authorPosts = await getPostsByAuthor(author_id);
+    const getURL = async function(){
+      try{
+          let thumbnails=[];
+          for(let i=0; i<authorPosts.length; i++){
+              let url = await getRandomPic();
+              thumbnails.push(url);
+          }
+          return thumbnails;
+      } catch(error){
+          console.log(error)
+      }
+    }
+    if(authorPosts !== "Empty Post"){
+        elPageTitle.innerHTML = `${authorDetails.name} Posts`
+        let thumbnails = await getURL();
+        for(let i=0; i<authorPosts.length; i++){
+          let post = createPostElement(thumbnails[i], authorPosts[i]);
+          console.log(post);
+          elPostList.appendChild(post);
+        }
+        elPostList.classList.remove("d-none");
+        elLoading.classList.add("d-none");
+    } else {
+        elLoading.classList.add("d-none")
+        elEmptyPost.classList.remove("d-none")
+    }
+  } catch(error){
+      console.log(error)
+  }
 };
 
 renderPosts();

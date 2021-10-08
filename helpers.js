@@ -18,6 +18,7 @@ export const getPosts = async () => {
         const author = await getAuthor(postData.userId);
         return [postData, randomPic, randomPicProfile, postComments, author];
     } catch(error) {
+        console.log('getPost', error);
         return "Not Found";
     }
   };
@@ -43,7 +44,14 @@ export const getPosts = async () => {
   };
   
   export const getPostsByAuthor = async (author_id) => {
-    // EDIT HERE
+    try{
+      const fetchAuthorPosts = await fetch(`https://jsonplaceholder.typicode.com/users/${author_id}/posts`);
+      const authorPosts = await fetchAuthorPosts.json();
+      return authorPosts;
+    } catch(error){
+      console.log('getPostsByAuthor', error);
+      return "Empty Post";
+    }
   };
   
   export const getRandomPic = async () => {
